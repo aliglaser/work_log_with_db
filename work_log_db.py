@@ -10,6 +10,7 @@ db = SqliteDatabase('work_log.db')
 
 
 def clear():
+	"""clear the screen"""
 	os.system('cls' if os.name=="nt" else 'clear')	
 
 
@@ -257,11 +258,61 @@ def find_by_date():
 			
 def delete_entry(entry):
 	"""Delete an entry"""
+	"""
+	
+	>>>menu_loop()
+	a) Add Entry
+	b) Search entries
+	Enter 'q' to quit.
+	Action: b
+	e) Find by Employee
+	d) Find by date
+	r) Find by date range
+	t) find_by_time_spent
+	k) Find by term
+	q) Show the menu
+	Search By: e
+	****NAME LIST****
+	lala
+	nurinuri
+	andrew souvlakii
+	q
+	q
+	alison
+	alpha
+	hoho
+	*********************
+	Choose the name of the employee >> lala
+	======================================
+
+	 Date: 02/02/2019
+	 Employee name: lala
+	 Task: k
+	 Duration: 20
+	 Notes: 
+
+	=======================================
+	d) Delete an entry
+	e) Edit the entry
+	choose the menu(Hit enter to skip): d
+	Are you sure? [y/N] y
+	Entry deleted Please hit Enter to proceed
+
+
+	"""
 	if input("Are you sure? [y/N] ").lower() == 'y':
 		entry.delete_instance()
 		input("Entry deleted Please hit Enter to proceed")
 
 def edit_date_entry():
+	"""edit the date of the entry"""
+	"""
+
+	>>> date = edit_date_entry()
+	Provide a changed date (dd/mm/YYYY)>> 02/03/2019
+
+	"""
+
 	date_fmt = input("Provide a changed date (dd/mm/YYYY)>> ")
 	try:
 		date_result = datetime.datetime.strptime(date_fmt, '%d/%m/%Y')
@@ -274,6 +325,54 @@ def edit_date_entry():
 
 def edit_entry(entry):
 	"""Edit the entry"""
+	"""
+
+	>>>menu_loop()
+	a) Add Entry
+	b) Search entries
+	Enter 'q' to quit.
+	Action: b
+	e) Find by Employee
+	d) Find by date
+	r) Find by date range
+	t) find_by_time_spent
+	k) Find by term
+	q) Show the menu
+	Search By: e
+	****NAME LIST****
+	lala
+	nurinuri
+	andrew souvlakii
+	q
+	q
+	alison
+	alpha
+	hoho
+	*********************
+	Choose the name of the employee >> nurinuri
+	======================================
+
+	 Date: 04/28/2018
+	 Employee name: nurinuri
+	 Task: study
+	 Duration: 20
+	 Notes: 
+
+	=======================================
+	d) Delete an entry
+	e) Edit the entry
+	choose the menu(Hit enter to skip): e
+	Enter a name: nuri
+	Provide a changed date (dd/mm/YYYY)>> 03/04/2019
+	Enter a task name: science 
+	Enter number of minutes spent working on the task: 20
+	Notes for this task (ENTER if None): by june 29th
+	Are you sure? [y/N] y
+	Entry edited! Please hit Enter to proceed
+
+
+
+	"""
 	edit_name = name_entry()
 	edit_date = edit_date_entry()
 	edit_task_name = task_name_entry()
@@ -286,7 +385,7 @@ def edit_entry(entry):
 		entry.time_spent = edit_time_spent
 		entry.notes = edit_notes
 		entry.save()
-		input("Entry deleted Please hit Enter to proceed")
+		input("Entry edited! Please hit Enter to proceed")
 		
 
 after_menu = OrderedDict([
@@ -296,7 +395,6 @@ after_menu = OrderedDict([
 
 def after_choice(entry):
 	"""Choose to either delete or edit the entry"""
-
 	for key, value in after_menu.items():
 		print('{}) {}'.format(key, value.__doc__))
 	choice = input('choose the menu(Hit enter to skip): ').lower()
@@ -309,7 +407,6 @@ def after_choice(entry):
 
 def find_by_time_spent():
 	"""find_by_time_spent"""
-
 	"""
 
 	>>> find_by_time_spent()
@@ -334,6 +431,7 @@ def find_by_time_spent():
 	e) Edit the entry
 	choose the menu(Hit enter to skip): 
 
+
 	"""
 	print("****SPENT TIME LIST*****")
 	time_spent_list = []
@@ -352,11 +450,14 @@ def find_by_time_spent():
 			if time_spent_input in time_spent_list:
 				entries = Entry.select().where(Entry.time_spent == time_spent_input)
 				for entry in entries:
+					clear()
+					print("==========================")
 					print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
 	'\n Employee name: ' + entry.name +
 	'\n Task: ' + entry.task_name +
 	'\n Duration: ' + str(entry.time_spent) +
 	'\n Notes: '+ entry.notes+'\n')
+					print("==========================")
 					after_choice(entry)	
 				break
 			else:
@@ -367,14 +468,14 @@ def find_by_time_spent():
 
 def find_by_term():
 	"""Find by term"""
-	
 	"""
 
 	>>> find_by_term()
 	Give us the term you're looking for >> lol
 	==========================
-          NONE
+          DONE
 	==========================
+
 
 	"""
 
@@ -382,21 +483,23 @@ def find_by_term():
 	entries = Entry.select().where((Entry.task_name.contains(term))
 		|(Entry.notes.contains(term)))
 	for entry in entries:
+		clear()
+		print("=========================")
 		print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
 '\n Employee name: ' + entry.name +
 '\n Task: ' + entry.task_name +
 '\n Duration: ' + str(entry.time_spent) +
 '\n Notes: '+ entry.notes+'\n')
+		print("=========================")
 		after_choice(entry)
 	if entries == None:
 		print("==========================")	
-		print("          NONE")
+		print("          DONE")
 		input("==========================")
 
 
 def find_by_date_range():
 	"""Find by date range"""
-
 	"""
 	
 	>>> find_by_date_range()
@@ -415,14 +518,18 @@ def find_by_date_range():
 	entries = Entry.select().where(((Entry.timestamp)>start_date)
 		&(Entry.timestamp<end_date))
 	for entry in entries:
+		clear()
+		print("===================================")
 		print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
 '\n Employee name: ' + entry.name +
 '\n Task: ' + entry.task_name +
 '\n Duration: ' + str(entry.time_spent) +
 '\n Notes: '+ entry.notes+'\n')
+		print("===================================")
+		after_choice(entry)
 	if entries == None:
 		print("==========================")	
-		print("          NONE")
+		print("          DONE")
 		input("==========================")
 
 
@@ -439,8 +546,8 @@ search_menu = OrderedDict([
 
 def search_entries():
 	"""Search entries"""
-
 	"""
+
 	>>> search_entries()
 	e) Find by Employee
 	d) Find by date
