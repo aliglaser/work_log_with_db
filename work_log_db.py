@@ -33,12 +33,6 @@ def initialize():
 
 def name_entry():
     """Prompt the employee for their name."""
-    """
-	
-	>>> name = name_entry()
-	Enter a name: alison
-
-    """
     while True:
         name = input("Enter a name: ")
         if len(name) == 0:
@@ -50,12 +44,7 @@ def name_entry():
 
 def task_name_entry():
     """Prompt the task name."""
-    """
 
-	>>> task_name = task_name_entry()
-	Enter a task name: korean study
-
-    """
     while True:
         task_name = input("Enter a task name: ")
         if len(task_name) == 0:
@@ -67,12 +56,7 @@ def task_name_entry():
 
 def time_spent_entry():
     """Prompt the employee for the time spent on their task."""
-    """
 
-	>>> time_spent = time_spent_entry()
-	Enter number of minutes spent working on the task: 20
-
-    """
     while True:
         time_spent = input("Enter number of minutes spent working on the task: ")
         try:
@@ -88,12 +72,6 @@ def time_spent_entry():
 def notes_entry():
     """Prompt employee to provide any additional notes"""
 
-    """
-
-	>>> notes = notes_entry()
-	Notes for this task (ENTER if None): by may 5th
-
-    """
     notes = input("Notes for this task (ENTER if None): ")
     return notes
 
@@ -101,16 +79,6 @@ def notes_entry():
 
 def add_entry():
 	"""Add Entry"""
-
-	"""
-
-	>>> add_entry()
-	Enter a name: alison
-	Enter a task name: korean study
-	Enter number of minutes spent working on the task: 20
-	Notes for this task (ENTER if None): by june 2nd
-
-	"""
 	name = name_entry()
 	task_name = task_name_entry()
 	time_spent = time_spent_entry()
@@ -121,20 +89,6 @@ def add_entry():
 
 def menu_loop():
 	"""Show the menu"""
-	
-	"""
-
-	>>>menu_loop()
-	a) Add Entry
-	b) Search entries
-	Enter 'q' to quit.
-	Action: a
-	Enter a name: alpha
-	Enter a task name: make a whole cake
-	Enter number of minutes spent working on the task: 30
-	Notes for this task (ENTER if None): hi
-
-	"""
 	while True:
 		clear()
 		for key, value in menu.items():
@@ -153,32 +107,6 @@ def menu_loop():
 
 def find_by_employee():
 	"""Find by Employee"""
-	"""
-	
-	>>> find_by_employee()
-	****NAME LIST****
-	lala
-	nurinuri
-	andrew souvlakii
-	q
-	q
-	alison
-	alpha
-	Choose the name of the employee >> q
-	======================================
-	 Date: 04/28/2018
-	 Employee name: q
-	 Task: skip
-	 Duration: 20
-	 Notes: 1
-
-	=======================================
-	d) Delete an entry
-	e) Edit the entry
-	choose the menu(Hit enter to skip): 
-
-
-	"""
 	print("****NAME LIST****")
 	employee_list = []
 	employees  = Entry.select()
@@ -209,20 +137,7 @@ def find_by_employee():
 
 def find_by_date():
 	"""Find by date"""
-	"""
 
-	>>> find_by_date()
-	****DATE LIST****
-	02/02/2019
-	28/04/2018
-	28/04/2018
-	28/04/2018
-	28/04/2018
-	28/04/2018
-	28/04/2018
-	Select the date(DD/MM/YYYY) >> 02/02/2019 
-
-	"""
 	print("****DATE LIST****")
 	date_list = []
 	entries = Entry.select()
@@ -258,61 +173,12 @@ def find_by_date():
 			
 def delete_entry(entry):
 	"""Delete an entry"""
-	"""
-	
-	>>>menu_loop()
-	a) Add Entry
-	b) Search entries
-	Enter 'q' to quit.
-	Action: b
-	e) Find by Employee
-	d) Find by date
-	r) Find by date range
-	t) find_by_time_spent
-	k) Find by term
-	q) Show the menu
-	Search By: e
-	****NAME LIST****
-	lala
-	nurinuri
-	andrew souvlakii
-	q
-	q
-	alison
-	alpha
-	hoho
-	*********************
-	Choose the name of the employee >> lala
-	======================================
-
-	 Date: 02/02/2019
-	 Employee name: lala
-	 Task: k
-	 Duration: 20
-	 Notes: 
-
-	=======================================
-	d) Delete an entry
-	e) Edit the entry
-	choose the menu(Hit enter to skip): d
-	Are you sure? [y/N] y
-	Entry deleted Please hit Enter to proceed
-
-
-	"""
 	if input("Are you sure? [y/N] ").lower() == 'y':
 		entry.delete_instance()
 		input("Entry deleted Please hit Enter to proceed")
 
 def edit_date_entry():
 	"""edit the date of the entry"""
-	"""
-
-	>>> date = edit_date_entry()
-	Provide a changed date (dd/mm/YYYY)>> 02/03/2019
-
-	"""
-
 	date_fmt = input("Provide a changed date (dd/mm/YYYY)>> ")
 	try:
 		date_result = datetime.datetime.strptime(date_fmt, '%d/%m/%Y')
@@ -325,54 +191,6 @@ def edit_date_entry():
 
 def edit_entry(entry):
 	"""Edit the entry"""
-	"""
-
-	>>>menu_loop()
-	a) Add Entry
-	b) Search entries
-	Enter 'q' to quit.
-	Action: b
-	e) Find by Employee
-	d) Find by date
-	r) Find by date range
-	t) find_by_time_spent
-	k) Find by term
-	q) Show the menu
-	Search By: e
-	****NAME LIST****
-	lala
-	nurinuri
-	andrew souvlakii
-	q
-	q
-	alison
-	alpha
-	hoho
-	*********************
-	Choose the name of the employee >> nurinuri
-	======================================
-
-	 Date: 04/28/2018
-	 Employee name: nurinuri
-	 Task: study
-	 Duration: 20
-	 Notes: 
-
-	=======================================
-	d) Delete an entry
-	e) Edit the entry
-	choose the menu(Hit enter to skip): e
-	Enter a name: nuri
-	Provide a changed date (dd/mm/YYYY)>> 03/04/2019
-	Enter a task name: science 
-	Enter number of minutes spent working on the task: 20
-	Notes for this task (ENTER if None): by june 29th
-	Are you sure? [y/N] y
-	Entry edited! Please hit Enter to proceed
-
-
-
-	"""
 	edit_name = name_entry()
 	edit_date = edit_date_entry()
 	edit_task_name = task_name_entry()
@@ -407,32 +225,6 @@ def after_choice(entry):
 
 def find_by_time_spent():
 	"""find_by_time_spent"""
-	"""
-
-	>>> find_by_time_spent()
-	****SPENT TIME LIST*****
-	20
-	20
-	34
-	20
-	20
-	20
-	30
-	29
-	Give us the time spent >> 20
-
-	 Date: 02/02/2019
-	 Employee name: lala
-	 Task: k
-	 Duration: 20
-	 Notes: 
-
-	d) Delete an entry
-	e) Edit the entry
-	choose the menu(Hit enter to skip): 
-
-
-	"""
 	print("****SPENT TIME LIST*****")
 	time_spent_list = []
 	entries = Entry.select()
@@ -468,17 +260,6 @@ def find_by_time_spent():
 
 def find_by_term():
 	"""Find by term"""
-	"""
-
-	>>> find_by_term()
-	Give us the term you're looking for >> lol
-	==========================
-          DONE
-	==========================
-
-
-	"""
-
 	term = input("Give us the term you're looking for >> ")
 	entries = Entry.select().where((Entry.task_name.contains(term))
 		|(Entry.notes.contains(term)))
@@ -500,17 +281,6 @@ def find_by_term():
 
 def find_by_date_range():
 	"""Find by date range"""
-	"""
-	
-	>>> find_by_date_range()
-	start date (MM/DD/YYYY)>> 02/09/2019
-	end date (MM/DD/YYYY)>> 02/09/2022 
-	==========================
-	          NONE
-	==========================
-
-
-	"""
 	start_date_str = input("start date (MM/DD/YYYY)>> ")
 	start_date = datetime.datetime.strptime(start_date_str, "%m/%d/%Y")
 	end_date_str = input("end date (MM/DD/YYYY)>> ")
@@ -546,20 +316,6 @@ search_menu = OrderedDict([
 
 def search_entries():
 	"""Search entries"""
-	"""
-
-	>>> search_entries()
-	e) Find by Employee
-	d) Find by date
-	r) Find by date range
-	t) find_by_time_spent
-	k) Find by term
-	q) Show the menu
-	Search By: l
-	********Please choose the right one. Hit Enter/return to continue********
-
-
-	"""
 	for key, value in search_menu.items():
 		print('{}) {}'.format(key, value.__doc__))
 	choice = input('Search By: ').lower()
