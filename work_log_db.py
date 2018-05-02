@@ -3,7 +3,6 @@ from collections import OrderedDict
 import datetime
 import os 
 
-
 from peewee import *
 
 db = SqliteDatabase('work_log.db')
@@ -83,9 +82,9 @@ def add_entry():
 	task_name = task_name_entry()
 	time_spent = time_spent_entry()
 	notes = notes_entry()
-	Entry.create(name = name, task_name=task_name, time_spent=time_spent, notes = notes)
-
-
+	entry=Entry.create(name = name, task_name=task_name, time_spent=time_spent, notes = notes)
+	input("Entry created! Hit enter to continue")
+	return entry
 
 def menu_loop():
 	"""Show the menu"""
@@ -121,17 +120,19 @@ def find_by_employee():
 		for entry in entries:
 			clear()
 			print("======================================")
-			print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
+			print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
 		'\n Employee name: ' + entry.name +
 		'\n Task: ' + entry.task_name +
 		'\n Duration: ' + str(entry.time_spent) +
 		'\n Notes: '+ entry.notes+'\n')
 			print("=======================================")
 			after_choice(entry)
+		return entries	
 	else:
 		print("===============")
 		print("     None")	
 		input("===============")
+		return entries
 		
 
 
@@ -164,12 +165,12 @@ def find_by_date():
 	'\n Notes: '+ entry.notes +'\n')
 						after_choice(entry)
 						(print("=============================================="))
-				break
+				return entries
 			else:
 				print("===============")
 				print("     None")	
 				input("===============")
-				break		
+				return entries		
 			
 def delete_entry(entry):
 	"""Delete an entry"""
@@ -177,16 +178,17 @@ def delete_entry(entry):
 		entry.delete_instance()
 		input("Entry deleted Please hit Enter to proceed")
 
+
 def edit_date_entry():
 	"""edit the date of the entry"""
-	date_fmt = input("Provide a changed date (dd/mm/YYYY)>> ")
-	try:
-		date_result = datetime.datetime.strptime(date_fmt, '%d/%m/%Y')
-	except ValueError:
-		print("Please provide one with the right form")
-		edit_date_entry()
-	else:
-		return date_result		
+	while True:
+		date_fmt = input("Provide a changed date (DD/MM/YYYY) >>")
+		try:
+			date_result = datetime.datetime.strptime(date_fmt, '%d/%m/%Y')
+		except ValueError:
+			return datetime.datetime.now()
+		else:			
+			return date_result		
 
 
 def edit_entry(entry):
@@ -204,7 +206,7 @@ def edit_entry(entry):
 		entry.notes = edit_notes
 		entry.save()
 		input("Entry edited! Please hit Enter to proceed")
-		
+		return entry
 
 after_menu = OrderedDict([
 	('d', delete_entry),
@@ -219,8 +221,8 @@ def after_choice(entry):
 
 	if choice in after_menu:
 		clear()
-		after_menu[choice](entry)
-		
+		result = after_menu[choice](entry)
+		return result
 			
 
 def find_by_time_spent():
@@ -244,63 +246,89 @@ def find_by_time_spent():
 				for entry in entries:
 					clear()
 					print("==========================")
-					print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
+					print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
 	'\n Employee name: ' + entry.name +
 	'\n Task: ' + entry.task_name +
 	'\n Duration: ' + str(entry.time_spent) +
 	'\n Notes: '+ entry.notes+'\n')
 					print("==========================")
 					after_choice(entry)	
-				break
+				return entries
 			else:
 				print("==========================")	
 				print("          NONE")
 				input("==========================")
-				break			
+				return entries			
 
 def find_by_term():
 	"""Find by term"""
 	term = input("Give us the term you're looking for >> ")
 	entries = Entry.select().where((Entry.task_name.contains(term))
 		|(Entry.notes.contains(term)))
-	for entry in entries:
-		clear()
-		print("=========================")
-		print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
-'\n Employee name: ' + entry.name +
-'\n Task: ' + entry.task_name +
-'\n Duration: ' + str(entry.time_spent) +
-'\n Notes: '+ entry.notes+'\n')
-		print("=========================")
-		after_choice(entry)
 	if entries == None:
 		print("==========================")	
 		print("          DONE")
 		input("==========================")
+		return entries
+	else:	
+		for entry in entries:
+			clear()
+			print("=========================")
+			print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
+	'\n Employee name: ' + entry.name +
+	'\n Task: ' + entry.task_name +
+	'\n Duration: ' + str(entry.time_spent) +
+	'\n Notes: '+ entry.notes+'\n')
+			print("=========================")
+			after_choice(entry)
+		return entries		
+		
+	
 
 
 def find_by_date_range():
 	"""Find by date range"""
-	start_date_str = input("start date (MM/DD/YYYY)>> ")
-	start_date = datetime.datetime.strptime(start_date_str, "%m/%d/%Y")
-	end_date_str = input("end date (MM/DD/YYYY)>> ")
-	end_date = datetime.datetime.strptime(end_date_str, "%m/%d/%Y")
+	while True:
+		start_date_str = input("start date (DD/MM/YYYY)>> ")
+		try:
+			start_date_result = datetime.datetime.strptime(start_date_str, '%d/%m/%Y')
+		except ValueError:
+			print("Please provide ones with the right form")
+			continue
+		else:
+			break
+	while True:
+		end_date_str = input("end date (DD/MM/YYYY)>> ")
+		try:
+			end_date_result = datetime.datetime.strptime(end_date_str, '%d/%m/%Y')
+		except ValueError:
+			print("Please provide ones with the right form")
+			continue
+		else:
+			break			
+	start_date = datetime.datetime.strptime(start_date_str, "%d/%m/%Y")
+	end_date = datetime.datetime.strptime(end_date_str, "%d/%m/%Y")
 	entries = Entry.select().where(((Entry.timestamp)>start_date)
-		&(Entry.timestamp<end_date))
-	for entry in entries:
-		clear()
-		print("===================================")
-		print('\n Date: ' + entry.timestamp.strftime("%m/%d/%Y") +
-'\n Employee name: ' + entry.name +
-'\n Task: ' + entry.task_name +
-'\n Duration: ' + str(entry.time_spent) +
-'\n Notes: '+ entry.notes+'\n')
-		print("===================================")
-		after_choice(entry)
+		&(Entry.timestamp<end_date))	
+
 	if entries == None:
 		print("==========================")	
 		print("          DONE")
 		input("==========================")
+		return entries
+	else:		
+		for entry in entries:
+			clear()
+			print("===================================")
+			print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
+	'\n Employee name: ' + entry.name +
+	'\n Task: ' + entry.task_name +
+	'\n Duration: ' + str(entry.time_spent) +
+	'\n Notes: '+ entry.notes+'\n')
+			print("===================================")
+			after_choice(entry)	
+		
+		return entries	
 
 
 
@@ -322,13 +350,11 @@ def search_entries():
 
 	if choice in search_menu:
 		clear()
-		search_menu[choice]()
+		result=search_menu[choice]()
+		return result
 	else:
 		input("********Please choose the right one. Hit Enter/return to continue********")
 		search_entries()
-
-
-
 
 
 menu = OrderedDict([
