@@ -127,13 +127,12 @@ def find_by_employee():
 		'\n Notes: '+ entry.notes+'\n')
 			print("=======================================")
 			after_choice(entry)
-		return entries	
-	else:
 		print("===============")
-		print("     None")	
-		input("===============")
-		return entries
-		
+		print("     Done")	
+		print("===============")	
+		input("Hit Enter to continue....")
+		return entries	
+
 
 
 def find_by_date():
@@ -167,12 +166,12 @@ def find_by_date():
 	'\n Notes: '+ entry.notes +'\n')
 						print("==============================================")
 						after_choice(entry)
-				return entries
-			else:
 				print("===============")
-				print("     None")	
-				input("===============")
-				return entries		
+				print("     Done")	
+				print("===============")	
+				input("Hit Enter to continue....")
+				return entries
+			
 			
 def delete_entry(entry):
 	"""Delete an entry"""
@@ -255,12 +254,11 @@ def find_by_time_spent():
 	'\n Notes: '+ entry.notes+'\n')
 					print("==========================")
 					after_choice(entry)	
-				return entries
-			else:
 				print("==========================")	
-				print("          NONE")
-				input("==========================")
-				return entries			
+				print("          DONE")
+				input("==========================")	
+				return entries
+				
 
 def find_by_term():
 	"""Find by term"""
