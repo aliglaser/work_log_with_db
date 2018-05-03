@@ -155,16 +155,18 @@ def find_by_date():
 			continue
 		else:
 			if date_fmt in date_list:
-				print("==============================================")
+				
 				for entry in entries:
 					if entry.timestamp.strftime("%d/%m/%Y") == date_fmt:
+						clear()
+						print("==============================================")
 						print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
 	'\n Employee name: ' + entry.name +
 	'\n Task: ' + entry.task_name +
 	'\n Duration: ' + str(entry.time_spent) +
 	'\n Notes: '+ entry.notes +'\n')
+						print("==============================================")
 						after_choice(entry)
-						(print("=============================================="))
 				return entries
 			else:
 				print("===============")
@@ -187,7 +189,7 @@ def edit_date_entry():
 			date_result = datetime.datetime.strptime(date_fmt, '%d/%m/%Y')
 		except ValueError:
 			return datetime.datetime.now()
-		else:			
+		else:	
 			return date_result		
 
 
@@ -263,25 +265,23 @@ def find_by_time_spent():
 def find_by_term():
 	"""Find by term"""
 	term = input("Give us the term you're looking for >> ")
-	entries = Entry.select().where((Entry.task_name.contains(term))
-		|(Entry.notes.contains(term)))
-	if entries == None:
-		print("==========================")	
-		print("          DONE")
-		input("==========================")
-		return entries
-	else:	
-		for entry in entries:
-			clear()
-			print("=========================")
-			print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
-	'\n Employee name: ' + entry.name +
-	'\n Task: ' + entry.task_name +
-	'\n Duration: ' + str(entry.time_spent) +
-	'\n Notes: '+ entry.notes+'\n')
-			print("=========================")
-			after_choice(entry)
-		return entries		
+	entries = Entry.select().where((Entry.task_name.contains(term))|(Entry.notes.contains(term)))	
+	for entry in entries:
+		clear()
+		print("=========================")
+		print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
+'\n Employee name: ' + entry.name +
+'\n Task: ' + entry.task_name +
+'\n Duration: ' + str(entry.time_spent) +
+'\n Notes: '+ entry.notes+'\n')
+		print("=========================")
+		after_choice(entry)
+	print("==========================")	
+	print("          DONE")
+	print("==========================")
+	input("Hit enter to continue....")
+	return entries
+	
 		
 	
 
@@ -308,28 +308,24 @@ def find_by_date_range():
 			break			
 	start_date = datetime.datetime.strptime(start_date_str, "%d/%m/%Y")
 	end_date = datetime.datetime.strptime(end_date_str, "%d/%m/%Y")
-	entries = Entry.select().where(((Entry.timestamp)>start_date)
-		&(Entry.timestamp<end_date))	
+	entries = Entry.select().where(((Entry.timestamp)>start_date)&(Entry.timestamp<end_date))	
 
-	if entries == None:
-		print("==========================")	
-		print("          DONE")
-		input("==========================")
-		return entries
-	else:		
-		for entry in entries:
-			clear()
-			print("===================================")
-			print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
-	'\n Employee name: ' + entry.name +
-	'\n Task: ' + entry.task_name +
-	'\n Duration: ' + str(entry.time_spent) +
-	'\n Notes: '+ entry.notes+'\n')
-			print("===================================")
-			after_choice(entry)	
+	for entry in entries:
+		clear()
+		print("===================================")
+		print('\n Date: ' + entry.timestamp.strftime("%d/%m/%Y") +
+'\n Employee name: ' + entry.name +
+'\n Task: ' + entry.task_name +
+'\n Duration: ' + str(entry.time_spent) +
+'\n Notes: '+ entry.notes+'\n')
+		print("===================================")
+		after_choice(entry)	
+	print("==========================")	
+	print("          DONE")
+	print("==========================")	
+	input("Hit enter to continue....")
+	return entries
 		
-		return entries	
-
 
 
 search_menu = OrderedDict([

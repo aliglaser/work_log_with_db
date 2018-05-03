@@ -83,10 +83,6 @@ class WorkLogAddDeleteEditTests(unittest.TestCase):
 			with unittest.mock.patch('builtins.input', side_effect=["coffee", "02/02/2002", "barista", 222, "Whatanice", "y", " "]):
 				self.assertEqual(work_log_db.edit_entry(entry=entry).name, "coffee")			
 
-	def test_edit_date_entry(self):
-		with unittest.mock.patch('builtins.input', return_value="30/02/2019"):
-			self.assertEqual(work_log_db.edit_date_entry().strftime('%d/%m/%Y'), "30/02/2019")
-
 
 
 class WorkLogSearchTests(unittest.TestCase):
@@ -120,11 +116,11 @@ class WorkLogSearchTests(unittest.TestCase):
 				self.assertEqual(work_log_db.find_by_date().count(), 1)			
 
 	def test_find_by_date_range(self):
-		with test_database(TEST_DB, (work_log_db.Entry,)):
-			entry = work_log_db.Entry.create(**ENTRIES[3])
-			self.assertEqual(work_log_db.Entry.select().count(), 1)
-			with unittest.mock.patch('builtins.input', side_effect=["01/01/2013", "01/01/2014", " "]):
-				self.assertEqual(work_log_db.find_by_date_range().count(), 1)			
+	 	with test_database(TEST_DB, (work_log_db.Entry,)):
+	 		entry = work_log_db.Entry.create(**ENTRIES[3])
+	 		self.assertEqual(work_log_db.Entry.select().count(), 1)
+	 		with unittest.mock.patch('builtins.input', side_effect=["01/01/2013", "01/01/2014", " ", " "]):
+	 			self.assertEqual(work_log_db.find_by_date_range().count(), 1)			
 
 
 if __name__ == '__main__':
